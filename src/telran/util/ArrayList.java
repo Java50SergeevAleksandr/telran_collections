@@ -158,19 +158,19 @@ public class ArrayList<T> implements List<T> {
 		return res;
 	}
 
-//	@Override
-//	public boolean removeIf(Predicate<T> predicate) {
-//		// TODO try to rewrite method removeIf with complexity O[N]
-//		Iterator<T> it = iterator();
-//		T[] findedValues = (T[]) new Object[0];
-//		int index = 0;
-//		while (it.hasNext()) {
-//			T val = it.next();
-//			if (predicate.test(val)) {
-//				findedValues[index++] = val;
-//			}
-//		}
-//		
-//		return removeAll(null);
-//	}
+	@Override
+	public boolean removeIf(Predicate<T> predicate) {
+		int newIndex = 0;
+		int oldSize = size;
+		for (int i = 0; i < oldSize; i++) {
+			if (!predicate.test(array[i])) {
+				array[newIndex++] = array[i];
+			}
+		}
+		size = newIndex;
+		for (; newIndex < oldSize; newIndex++) {
+			array[newIndex] = null;
+		}
+		return size < oldSize;
+	}
 }
