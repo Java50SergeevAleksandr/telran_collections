@@ -27,7 +27,6 @@ public class LinkedList<T> implements List<T> {
 
 		private LinkedListIterator() {
 			current = head;
-
 			findNext();
 		}
 
@@ -37,11 +36,11 @@ public class LinkedList<T> implements List<T> {
 			if (index > -1) {
 				if (current.next != null) {
 					isNext = true;
-					current = current.next;					
+					current = current.next;
 				}
 			} else {
 				if (current != null) {
-					isNext = true;					
+					isNext = true;
 				}
 			}
 			index++;
@@ -139,7 +138,6 @@ public class LinkedList<T> implements List<T> {
 		indexValidation(index, true);
 		Node<T> node = new Node<>(obj);
 		addNode(index, node);
-
 	}
 
 	@Override
