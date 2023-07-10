@@ -12,9 +12,9 @@ import telran.util.Collection;
 
 abstract class CollectionTest {
 	Integer[] numbers = { 10, -20, 8, 14, 30, 12, 100 };
-	static final int N_BIG_NUMBERS = 1_000_00;
+	static final int N_BIG_NUMBERS = 100_000;
 	static final int N_RUNS = 1000;
-	Collection<Integer> collection;
+	protected Collection<Integer> collection;
 
 	@BeforeEach
 	void setUp() {

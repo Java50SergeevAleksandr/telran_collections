@@ -13,7 +13,7 @@ public class ArrayList<T> implements List<T> {
 
 	private class ArrayListIterator implements Iterator<T> {
 		int currentIndex = 0;
-		boolean flNext = false;
+		boolean isRemoveAvailable = false;
 
 		@Override
 		public boolean hasNext() {
@@ -26,17 +26,17 @@ public class ArrayList<T> implements List<T> {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
-			flNext = true;
+			isRemoveAvailable = true;
 			return array[currentIndex++];
 		}
 
 		@Override
 		public void remove() {
-			if (!flNext) {
+			if (!isRemoveAvailable) {
 				throw new IllegalStateException();
 			}
 			ArrayList.this.remove(--currentIndex);
-			flNext = false;
+			isRemoveAvailable = false;
 		}
 
 	}
@@ -110,15 +110,7 @@ public class ArrayList<T> implements List<T> {
 		System.arraycopy(array, index + 1, array, index, size - index);
 		array[size] = null;
 		return res;
-	}
-
-	private void indexValidation(int index, boolean sizeInclusive) {
-		int bounder = sizeInclusive ? size : size - 1;
-		if (index < 0 || index > bounder) {
-			throw new IndexOutOfBoundsException(index);
-		}
-
-	}
+	}	
 
 	@Override
 	public int indexOf(Object pattern) {
