@@ -41,15 +41,16 @@ abstract class ListTest extends CollectionTest {
 		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.add(-1, 10));
 	}
 
+	@Test
 	void removeIndex() {
 		Integer[] expected1 = { -20, 8, 14, 30, 12, 100 };
 		Integer[] expected2 = { -20, 8, 30, 12, 100 };
 		Integer[] expected3 = { -20, 8, 30, 12 };
 		assertEquals(numbers[0], list.remove(0));
 		assertArrayEquals(expected1, list.toArray(new Integer[0]));
-		assertEquals(numbers[2], list.remove(2));
+		assertEquals(numbers[3], list.remove(2));
 		assertArrayEquals(expected2, list.toArray(new Integer[0]));
-		assertEquals(numbers[4], list.remove(4));
+		assertEquals(numbers[6], list.remove(4));
 		assertArrayEquals(expected3, list.toArray(new Integer[0]));
 		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.remove(4));
 		assertThrowsExactly(IndexOutOfBoundsException.class, () -> list.remove(-1));
@@ -81,10 +82,11 @@ abstract class ListTest extends CollectionTest {
 		assertEquals(5, list.indexOf(n -> n == 12));
 	}
 
+	@Test
 	void lastIndexOfTest() {
 		list.add(0, 10);
 		list.add(0, 12);
-		assertEquals(1, list.lastIndexOf(10));
+		assertEquals(2, list.lastIndexOf(10));
 		assertEquals(-1, list.lastIndexOf(10000));
 		assertEquals(-1, list.lastIndexOf(n -> n % 2 == 1));
 		assertEquals(7, list.lastIndexOf(n -> n == 12));
