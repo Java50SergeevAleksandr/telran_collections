@@ -16,7 +16,6 @@ public class ListValidator {
 	public Node head;
 
 	public ListValidator() {
-
 		Node n0 = new Node(0);
 		Node n1 = new Node(1);
 		Node n2 = new Node(2);
@@ -58,8 +57,8 @@ public class ListValidator {
 		}
 
 		restoreNodes(head, savedOrder);
-
 		current = head;
+		
 		for (int i = 0; i < counter; i++) {
 			current = current.next;
 		}
@@ -70,6 +69,7 @@ public class ListValidator {
 
 	private static void restoreNodes(Node head, ArrayList<Node> savedOrder) {
 		Node current = head;
+		
 		for (Node link : savedOrder) {
 			current.next = link;
 			current = link;
@@ -79,6 +79,5 @@ public class ListValidator {
 	public static void main(String[] args) {
 		ListValidator test = new ListValidator();
 		System.out.println(indexOfCircular(test.head));
-
 	}
 }
