@@ -110,18 +110,6 @@ public class ArrayList<T> implements List<T> {
 		System.arraycopy(array, index + 1, array, index, size - index);
 		array[size] = null;
 		return res;
-	}	
-
-	@Override
-	public int indexOf(Object pattern) {
-
-		return indexOf(Predicate.isEqual(pattern));
-	}
-
-	@Override
-	public int lastIndexOf(Object pattern) {
-
-		return lastIndexOf(Predicate.isEqual(pattern));
 	}
 
 	@Override

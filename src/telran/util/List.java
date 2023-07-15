@@ -9,11 +9,7 @@ public interface List<T> extends Collection<T> {
 
 	T set(int index, T obj);
 
-	T remove(int index);
-
-	int indexOf(Object pattern);
-
-	int lastIndexOf(Object pattern);
+	T remove(int index);	
 
 	int indexOf(Predicate<T> predicate);
 
@@ -41,6 +37,14 @@ public interface List<T> extends Collection<T> {
 		if (index < 0 || index > bounder) {
 			throw new IndexOutOfBoundsException(index);
 		}
+	}
+
+	default int indexOf(Object pattern) {
+		return indexOf(Predicate.isEqual(pattern));
+	}
+
+	default int lastIndexOf(Object pattern) {
+		return lastIndexOf(Predicate.isEqual(pattern));
 	}
 
 }
