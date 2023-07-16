@@ -99,9 +99,9 @@ public class HashSet<T> implements Set<T> {
 
 	private class HashSetIterator implements Iterator<T> {
 		private boolean isRemoveAvailable = false;
-		int checkedSize = 0;
-		int tableIndex = 0;
-		int positionInList = 0;
+		private int checkedSize = 0;
+		private int tableIndex = 0;
+		private int positionInList = 0;
 
 		@Override
 		public boolean hasNext() {
