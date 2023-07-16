@@ -91,4 +91,9 @@ abstract class ListTest extends CollectionTest {
 		assertEquals(-1, list.lastIndexOf(n -> n % 2 == 1));
 		assertEquals(7, list.lastIndexOf(n -> n == 12));
 	}
+
+	@Override
+	protected void runArrayTest(Integer[] expected, Integer[] actual) {
+		assertArrayEquals(expected, actual);
+	}
 }
