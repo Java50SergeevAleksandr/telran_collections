@@ -56,24 +56,13 @@ public class ListValidator {
 			current = next;
 		}
 
-		restoreNodes(head, savedOrder);
 		current = head;
-		
-		for (int i = 0; i < counter; i++) {
-			current = current.next;
-		}
 
-		return current.next == null ? -1 : counter - 1;
-
-	}
-
-	private static void restoreNodes(Node head, ArrayList<Node> savedOrder) {
-		Node current = head;
-		
 		for (Node link : savedOrder) {
 			current.next = link;
 			current = link;
 		}
+		return current.next == null ? -1 : counter - 1;
 	}
 
 	public static void main(String[] args) {
