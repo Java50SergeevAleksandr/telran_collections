@@ -22,39 +22,41 @@ public class HashSet<T> implements Set<T> {
 	@Override
 	public boolean add(T obj) {
 		boolean res = false;
-		if ((float) size / hashTable.length >= factor) {
-			hashTableRecreation();
-		}
 
 		if (!contains(obj)) {
-			int index = getIndex(obj);
-			LinkedList<T> list = null;
-
-			if (hashTable[index] == null) {
-				hashTable[index] = new LinkedList<>();
+			if (((float) size / hashTable.length) >= factor) {
+				hashTableRecreation();
 			}
 
-			list = hashTable[index];
-			res = true;
-			list.add(obj);
+			addHashTable(obj, hashTable);
 			size++;
+			res = true;
 		}
 
 		return res;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void hashTableRecreation() {
-		HashSet<T> tmp = new HashSet<>(hashTable.length * 2);
+		LinkedList<T>[] tmp = new LinkedList[hashTable.length * 2];
 
 		for (LinkedList<T> list : hashTable) {
 			if (list != null) {
 				for (T obj : list) {
-					tmp.add(obj);
+					addHashTable(obj, tmp);
 				}
 			}
 		}
+		hashTable = tmp;
+	}
 
-		hashTable = tmp.hashTable;
+	private void addHashTable(T obj, LinkedList<T>[] tmp) {
+		int index = Math.abs(obj.hashCode() % tmp.length);
+		if (tmp[index] == null) {
+			tmp[index] = new LinkedList<>();
+		}
+		tmp[index].add(obj);
+
 	}
 
 	private int getIndex(Object obj) {

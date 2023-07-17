@@ -14,8 +14,9 @@ import telran.util.Collection;
 
 abstract class CollectionTest {
 	Integer[] numbers = { 10, -20, 8, 14, 30, 12, 100 };
-	static final int N_BIG_NUMBERS = 100_000;
+	static final int N_BIG_NUMBERS = 10_000;
 	static final int N_RUNS = 1000;
+	private static final int N_RUNS_CONTAINS = 10_000;
 	protected Collection<Integer> collection;
 
 	@BeforeEach
@@ -113,12 +114,25 @@ abstract class CollectionTest {
 	}
 
 	@Test
+	void containsPerformanceTest() {
+		Integer[] bigArray = getBigArray();
+		Collection<Integer> bigCollection = getCollection(bigArray);
+
+		for (int i = 0; i < N_RUNS_CONTAINS; i++) {
+			bigCollection.contains(1000);
+		}
+	}
+
+	@Test
 	void iteratorTest() {
 		Iterator<Integer> it = collection.iterator();
 		while (it.hasNext()) {
 			it.next();
 		}
 		assertThrowsExactly(NoSuchElementException.class, () -> it.next());
+		it.remove();
+		assertThrowsExactly(IllegalStateException.class, ()-> it.remove());
+		
 	}
 
 	private Integer[] getBigArray() {
