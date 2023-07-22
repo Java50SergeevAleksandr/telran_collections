@@ -10,11 +10,13 @@ import telran.util.Collection;
 import telran.util.TreeSet;
 
 class TreeSetTest extends SetTest {
+	TreeSet<Integer> treeSet;
 
 	@Override
 	@BeforeEach
 	void setUp() {
-		collection = new TreeSet<Integer>();
+		treeSet = new TreeSet<Integer>();
+		collection = treeSet;
 		super.setUp();
 
 	}
@@ -48,23 +50,37 @@ class TreeSetTest extends SetTest {
 
 	@Test
 	protected void getFirstTest() {
-		int exp = -20;
-		assertEquals((Integer) exp, ((TreeSet<Integer>) collection).first());
+		assertEquals(Integer.valueOf(-20), treeSet.first());
 		collection.clear();
-		assertEquals(null, ((TreeSet<Integer>) collection).first());
+		assertNull(treeSet.first());
 	}
 
 	@Test
 	protected void getLastTest() {
-		int exp = 100;
-		assertEquals((Integer) exp, ((TreeSet<Integer>) collection).last());
+		assertEquals(Integer.valueOf(100), treeSet.last());
 		collection.clear();
-		assertEquals(null, ((TreeSet<Integer>) collection).last());
+		assertNull(treeSet.last());
 	}
 
 	@Test
-	protected void addRemoveTest() {
-		assertTrue(collection.add(7));
-		assertTrue(collection.remove(8));
+	void ceilingTest() {
+		assertEquals(Integer.valueOf(-20), treeSet.ceiling(-30));
+		assertEquals(Integer.valueOf(-20), treeSet.ceiling(-20));
+		assertEquals(Integer.valueOf(100), treeSet.ceiling(80));
+		assertEquals(Integer.valueOf(100), treeSet.ceiling(100));
+		assertNull(treeSet.ceiling(200));
+		collection.clear();
+		assertNull(treeSet.ceiling(1));
+	}
+
+	@Test
+	void floorTest() {
+		assertEquals(Integer.valueOf(100), treeSet.floor(200));
+		assertEquals(Integer.valueOf(100), treeSet.floor(100));
+		assertEquals(Integer.valueOf(30), treeSet.floor(80));
+		assertEquals(Integer.valueOf(-20), treeSet.floor(-20));
+		assertNull(treeSet.floor(-30));
+		collection.clear();
+		assertNull(treeSet.ceiling(1));
 	}
 }
