@@ -23,4 +23,9 @@ public abstract class SetTest extends CollectionTest {
 		assertNull(((Set<Integer>) collection).get(100000));
 	}
 
+	@Test
+	void equalsTest() {
+		// TODO Compare equality of Sets, order of elements must not be compared
+		fail();
+	}
 }

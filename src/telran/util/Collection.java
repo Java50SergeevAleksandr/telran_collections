@@ -66,4 +66,10 @@ public interface Collection<T> extends Iterable<T> {
 		}
 		return oldSize > size();
 	}
+
+	default boolean retainAll(Collection<T> collection) {
+		// TODO Removes from this collection all elements that are not contained by
+		// other specified collection
+		return false;
+	}
 }

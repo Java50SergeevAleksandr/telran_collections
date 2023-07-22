@@ -96,4 +96,10 @@ abstract class ListTest extends CollectionTest {
 	protected void runArrayTest(Integer[] expected, Integer[] actual) {
 		assertArrayEquals(expected, actual);
 	}
+
+	@Test
+	void equalsTest() {
+		// TODO Compare equality of Lists, order of elements must be compared
+		fail();
+	}
 }

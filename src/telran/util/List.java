@@ -9,7 +9,7 @@ public interface List<T> extends Collection<T> {
 
 	T set(int index, T obj);
 
-	T remove(int index);	
+	T remove(int index);
 
 	int indexOf(Predicate<T> predicate);
 
@@ -45,6 +45,12 @@ public interface List<T> extends Collection<T> {
 
 	default int lastIndexOf(Object pattern) {
 		return lastIndexOf(Predicate.isEqual(pattern));
+	}
+
+	default boolean listEqualsTo(Object other) {
+		// TODO Checks other is List having the equal elements in the same order (using
+		// iteration)
+		return false;
 	}
 
 }

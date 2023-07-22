@@ -131,8 +131,8 @@ abstract class CollectionTest {
 		}
 		assertThrowsExactly(NoSuchElementException.class, () -> it.next());
 		it.remove();
-		assertThrowsExactly(IllegalStateException.class, ()-> it.remove());
-		
+		assertThrowsExactly(IllegalStateException.class, () -> it.remove());
+
 	}
 
 	private Integer[] getBigArray() {
@@ -142,6 +142,25 @@ abstract class CollectionTest {
 			res[i] = gen.nextInt();
 		}
 		return res;
+	}
+
+	@Test
+	void retainAllTest() {
+		// TODO check method retainAll
+		fail();
+	}
+
+	@Test
+	void cloneTest() throws Exception {
+		@SuppressWarnings("unchecked")
+		Collection<Integer> collection2 = (Collection<Integer>) collection.clone();
+		assertEquals(collection, collection2);
+		collection2.remove(-20);
+		assertFalse(collection2.contains(-20));
+		assertTrue(collection.contains(-20));
+		collection2.add(200);
+		assertTrue(collection2.contains(200));
+		assertFalse(collection.contains(200));
 	}
 
 	protected abstract Collection<Integer> getCollection(Integer[] ar1);
