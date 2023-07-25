@@ -103,7 +103,7 @@ public class LinearRecursion {
 		if (res) {
 			main = main.substring(main.length());
 		}
-		if (main.length() >= substr.length() ) { //&& main.length() != 1
+		if (main.length() > substr.length() ) { 
 			main = isSubstring(1, main, substr);
 		}
 
