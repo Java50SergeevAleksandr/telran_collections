@@ -68,8 +68,10 @@ public interface Collection<T> extends Iterable<T> {
 	}
 
 	default boolean retainAll(Collection<T> collection) {
-		// TODO Removes from this collection all elements that are not contained by
+		// Removes from this collection all elements that are not contained by
 		// other specified collection
-		return false;
+
+		return removeIf(e -> !collection.contains(e));
+
 	}
 }

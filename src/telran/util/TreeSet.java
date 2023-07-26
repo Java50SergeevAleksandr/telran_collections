@@ -156,7 +156,11 @@ public class TreeSet<T> implements SortedSet<T> {
 				if (prev == null) {
 					throw new IllegalStateException();
 				}
+				boolean prevWasJunction = isHaveFullChilds(prev);
 				TreeSet.this.removeNode(prev);
+				if (prevWasJunction) { // prev stilled the value from current
+					current = prev;
+				}
 				prev = null;
 			}
 		};
@@ -191,7 +195,7 @@ public class TreeSet<T> implements SortedSet<T> {
 				parentNode.left = childNode;
 			}
 		} else {
-			root = null;
+			root = childNode;
 		}
 		if (childNode != null) {
 			childNode.parent = parentNode;
@@ -282,21 +286,18 @@ public class TreeSet<T> implements SortedSet<T> {
 		return super.clone();
 	}
 
-	@Override
 	public SortedSet<T> headSetCopy(T toElement, boolean inclusive) {
 		// TODO Returns a shallow copy of the portion of this set whose elements are
 		// less than (or equal to, if inclusive is true) toElement.
 		return null;
 	}
 
-	@Override
 	public SortedSet<T> tailSetCopy(T fromElement, boolean inclusive) {
 		// TODO Returns a shallow copy of the portion of this set whose elements are
 		// greater than (or equal to, if inclusive is true) fromElement.
 		return null;
 	}
 
-	@Override
 	public SortedSet<T> subSetCopy(T fromElement, boolean fromInclusive, T toElement, boolean toInclusive) {
 		// TODO Returns a shallow copy of the portion of this set whose elements range
 		// from fromElement to toElement.
