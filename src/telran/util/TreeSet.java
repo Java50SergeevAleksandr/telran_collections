@@ -156,7 +156,11 @@ public class TreeSet<T> implements SortedSet<T> {
 				if (prev == null) {
 					throw new IllegalStateException();
 				}
+				boolean prevWasJunction = isHaveFullChilds(prev);
 				TreeSet.this.removeNode(prev);
+				if (prevWasJunction) { // prev stilled the value from current
+					current = prev;
+				}
 				prev = null;
 			}
 		};
