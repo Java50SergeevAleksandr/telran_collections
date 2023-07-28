@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import telran.util.ArrayList;
 import telran.util.Collection;
 import telran.util.TreeSet;
 
@@ -82,5 +83,74 @@ class TreeSetTest extends SetTest {
 		assertNull(treeSet.floor(-30));
 		collection.clear();
 		assertNull(treeSet.ceiling(1));
+	}
+
+	@Test
+	void displayRotatedTest() {
+		treeSet.setSpacesPerLevel(4);
+		treeSet.displayRotated();
+	}
+
+	@Test
+	void widthTest() {
+		assertEquals(3, treeSet.width());
+	}
+
+	@Test
+	void heightTest() {
+		assertEquals(4, treeSet.height());
+	}
+
+	@Test
+	void balanceTest() {
+		treeSet.balance();
+		assertEquals(4, treeSet.width());
+		assertEquals(3, treeSet.height());
+	}
+
+	@Test
+	void balanceTestArray() {
+		Integer[] array = new Integer[1023];
+		for (int i = 0; i < array.length; i++) {
+			array[i] = i;
+		}
+		reorderArray(array);
+		TreeSet<Integer> tree = new TreeSet<>();
+		for (Integer num : array) {
+			tree.add(num);
+		}
+		assertEquals(512, tree.width());
+	}
+
+	private void reorderArray(Integer[] array) {
+		ArrayList<Integer> ar = new ArrayList<>(array.length);
+		fillArray(array, 0, array.length - 1, ar);
+//		int i = 0;
+//		for (Integer elm : ar) {
+//			array[i++] = elm;
+//		}
+		for (int i = 0; i < array.length; i++) {
+			array[i] = ar.get(i);
+		}
+	}
+
+	private void fillArray(Integer[] source, int left, int right, ArrayList<Integer> tmp) {
+
+		if (left <= right) {
+			int sourceIndex = (left + right) / 2;
+			tmp.add(source[sourceIndex]);
+
+			fillArray(source, left, sourceIndex - 1, tmp);
+			fillArray(source, sourceIndex + 1, right, tmp);
+
+		}
+	}
+
+	@Test
+	void inverseTest() {
+		Integer[] expected = { 100, 30, 14, 12, 10, 8, -20 };
+		treeSet.inverse();
+		assertArrayEquals(expected, treeSet.toArray(new Integer[0]));
+		assertTrue(treeSet.contains(100));
 	}
 }
