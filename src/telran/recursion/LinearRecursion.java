@@ -57,6 +57,33 @@ public class LinearRecursion {
 		return res;
 	}
 
+	public static long pow2Solution(int a, int b) {
+
+		// HW #17 definition
+		// Write method pow with following limitations
+		// No cycles
+		// Arithmetic operations allowed +; - only
+		// if Additional functions applied then only with the same limitations
+		if (b < 0) {
+			throw new IllegalArgumentException();
+		}
+		long res = 1;
+		if (b > 0) {
+			res = multiply(a, pow2Solution(a, b - 1));
+		}
+		return res;
+	}
+
+	private static int multiply(int a, long b) {
+
+		int res = 0;
+		if (b != 0) {
+			res = b < 0 ? multiply(-a, -b) : a + multiply(a, b - 1);
+		}
+
+		return res;
+	}
+
 	public static int square(int x) {
 		// returns x ^ 2
 		// With following limitations
@@ -70,6 +97,21 @@ public class LinearRecursion {
 			res = x + square(x - 1);
 		}
 		return res + x - 1;
+	}
+
+	public static int square2S(int x) {
+		// returns x ^ 2
+		// With following limitations
+		// No cycles
+		// No any additional methods
+		// No static fields
+		// Only + ; - arithmetic operations
+		int res = 0;
+		if (x != 0) {
+			res = x < 0 ? square2S(-x) : x + x - 1 + square2S(x - 1);
+		}
+
+		return res;
 	}
 
 	public static boolean isSubstring(String string, String substr) {
@@ -88,27 +130,45 @@ public class LinearRecursion {
 		 * 
 		 * 2. No cycles;
 		 */
+
 		if (string.length() < substr.length() || string.length() == 0) {
 			throw new IllegalArgumentException("substing is bigger or empty");
 		}
-		String main = isSubstring(0, string, substr);
 
-		return main.length() == 0 ? true : false;
+		boolean res = checkMatch(string, substr);
 
-	}
-
-	private static String isSubstring(int index, String string, String substr) {
-		String main = string.substring(index);
-		boolean res = checkMatch(main, substr);
 		if (res) {
-			main = main.substring(main.length());
-		}
-		if (main.length() > substr.length() ) { 
-			main = isSubstring(1, main, substr);
+			return res;
 		}
 
-		return main;
+		if (string.length() > substr.length()) {
+			res = isSubstring(string.substring(1), substr);
+		}
+
+		return res;
 	}
+
+//=============================| SOLUTION 2 |=================================	
+//	public static boolean isSubstring(String string, String substr) {
+//	if (string.length() < substr.length() || string.length() == 0) {
+//	throw new IllegalArgumentException("substing is bigger or empty");
+//}
+//String main = isSubstring(0, string, substr);
+//
+//return main.length() == 0 ? true : false;
+//	}
+//	private static String isSubstring(int index, String string, String substr) {
+//		String main = string.substring(index);
+//		boolean res = checkMatch(main, substr);
+//		if (res) {
+//			main = main.substring(main.length());
+//		}
+//		if (main.length() > substr.length()) {
+//			main = isSubstring(1, main, substr);
+//		}
+//
+//		return main;
+//	}
 
 	private static boolean checkMatch(String main, String substr) {
 		int counter = substr.length() - 1;
