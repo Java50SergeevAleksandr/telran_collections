@@ -135,8 +135,12 @@ public class TreeSet<T> implements SortedSet<T> {
 		return size;
 	}
 
-	private Node<T> getCurrent(Node<T> current) {
-		return current.right != null ? getLeastFrom(current.right) : getGreaterParent(current);
+	private Node<T> getNextFrom(Node<T> node) {
+		return node.right != null ? getLeastFrom(node.right) : getGreaterParent(node);
+	}
+
+	private Node<T> getPreviousFrom(Node<T> node) {
+		return node.left != null ? getGreatestFrom(node.left) : getLeastParent(node);
 	}
 
 	@Override
@@ -156,7 +160,7 @@ public class TreeSet<T> implements SortedSet<T> {
 					throw new NoSuchElementException();
 				}
 				prev = current;
-				current = getCurrent(current);
+				current = getNextFrom(current);
 				return prev.obj;
 			}
 
@@ -366,7 +370,7 @@ public class TreeSet<T> implements SortedSet<T> {
 		Node<T> current = getLeastFrom(root);
 		while (current != null) {
 			res[index++] = current;
-			current = getCurrent(current);
+			current = getNextFrom(current);
 		}
 		return res;
 	}
@@ -376,39 +380,101 @@ public class TreeSet<T> implements SortedSet<T> {
 		comp = comp.reversed();
 	}
 
-	private void reverse(Node<T> point) {
+	private Node<T> reverse(Node<T> point) {
 		if (point != null) {
-			Node<T> tmp;
-			tmp = point.left;
-			point.left = point.right;
+			Node<T> tmp = reverse(point.left);
+			point.left = reverse(point.right);
 			point.right = tmp;
-			reverse(point.left);
-			reverse(point.right);
 		}
+		return point;
+
+// ======== first solution
+//		if (point != null) {
+//			Node<T> tmp;
+//			tmp = point.left;
+//			point.left = point.right;
+//			point.right = tmp;
+//			reverse(point.left);
+//			reverse(point.right);
+//		}
+	}
+
+	private Node<T> higherNode(T key, boolean strictly) {
+		// returns element if exists or nearest greater element
+		Node<T> node = null;
+		if (root != null) {
+			node = getParentOrNode(key); // never null
+			int compRes = comp.compare(node.obj, key);
+			if (compRes < 0 || compRes == 0 && strictly) {
+				node = getNextFrom(node);
+			}
+		}
+		return node;
+	}
+
+	private Node<T> lowerNode(T key, boolean strictly) {
+		// returns element if exists or nearest less element
+		Node<T> node = null;
+		if (root != null) {
+			node = getParentOrNode(key); // never null
+			int compRes = comp.compare(node.obj, key);
+			if (compRes > 0 || compRes == 0 && strictly) {
+				node = getPreviousFrom(node);
+			}
+		}
+		return node;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return setEqualsTo(obj);
 	}
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		// TODO Fix this method to return Shallow Copy of this collection
-		return super.clone();
+		// DONE Fix this method to return Shallow Copy of this collection
+		TreeSet<T> res = new TreeSet<>(comp);
+		res.addAll(this);
+		return res;
 	}
 
 	public SortedSet<T> headSetCopy(T toElement, boolean inclusive) {
-		// TODO Returns a shallow copy of the portion of this set whose elements are
+		// DONE Returns a shallow copy of the portion of this set whose elements are
 		// less than (or equal to, if inclusive is true) toElement.
-		return null;
+		Node<T> first = (root == null) ? null : getLeastFrom(root);
+		Node<T> last = lowerNode(toElement, !inclusive);
+		return copyRange(first, last);
 	}
 
 	public SortedSet<T> tailSetCopy(T fromElement, boolean inclusive) {
-		// TODO Returns a shallow copy of the portion of this set whose elements are
+		// DONE Returns a shallow copy of the portion of this set whose elements are
 		// greater than (or equal to, if inclusive is true) fromElement.
-		return null;
+		Node<T> first = higherNode(fromElement, !inclusive);
+		Node<T> last = (root == null) ? null : getGreatestFrom(root);
+		return copyRange(first, last);
 	}
 
 	public SortedSet<T> subSetCopy(T fromElement, boolean fromInclusive, T toElement, boolean toInclusive) {
-		// TODO Returns a shallow copy of the portion of this set whose elements range
+		// DONE Returns a shallow copy of the portion of this set whose elements range
 		// from fromElement to toElement.
-		return null;
+		if (comp.compare(fromElement, toElement) > 0) {
+			throw new IllegalArgumentException("fromElement > toElement");
+		}
+		Node<T> first = higherNode(fromElement, !fromInclusive);
+		Node<T> last = lowerNode(toElement, !toInclusive);
+		return copyRange(first, last);
+	}
+
+	private SortedSet<T> copyRange(Node<T> first, Node<T> last) {
+		TreeSet<T> res = new TreeSet<>(comp);
+		if (first != null && last != null && comp.compare(first.obj, last.obj) <= 0) {
+			Node<T> node;
+			for (node = first; node != last; node = getNextFrom(node)) {
+				res.add(node.obj);
+			}
+			res.add(node.obj); // for last
+		}
+		return res;
 	}
 
 }

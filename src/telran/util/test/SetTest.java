@@ -25,7 +25,18 @@ public abstract class SetTest extends CollectionTest {
 
 	@Test
 	void equalsTest() {
-		// TODO Compare equality of Sets, order of elements must not be compared
-		fail();
+		// Compare equality of Sets, order of elements must not be compared
+		var collection2 = getCollection(numbers);
+		assertEquals(collection, collection2);
+
+		// swap elements
+		int temp = numbers[0];
+		numbers[0] = numbers[1];
+		numbers[1] = temp;
+		collection2 = getCollection(numbers);
+		assertEquals(collection, collection2);
+
+		collection2.add(888);
+		assertNotEquals(collection, collection2);
 	}
 }
