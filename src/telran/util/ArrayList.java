@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
 @SuppressWarnings("unchecked")
-public class ArrayList<T> implements List<T> {
+public class ArrayList<T> implements List<T>, Cloneable {
 	private static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
 	private int size = 0;
@@ -152,5 +152,17 @@ public class ArrayList<T> implements List<T> {
 			array[newIndex] = null;
 		}
 		return size < oldSize;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return listEqualsTo(obj);
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		ArrayList<T> res = new ArrayList<>(array.length);
+		res.addAll(this);
+		return res;
 	}
 }

@@ -99,7 +99,19 @@ abstract class ListTest extends CollectionTest {
 
 	@Test
 	void equalsTest() {
-		// TODO Compare equality of Lists, order of elements must be compared
-		fail();
+		var collection2 = getCollection(numbers);
+		assertEquals(collection, collection2);
+
+		int temp = numbers[0];
+		numbers[0] = numbers[1];
+		numbers[1] = temp;
+		collection2 = getCollection(numbers);
+		assertNotEquals(collection, collection2);
+
+		var collection3 = getCollection(numbers);
+		collection2.add(888);
+		assertNotEquals(collection2, collection3);
+
 	}
+
 }

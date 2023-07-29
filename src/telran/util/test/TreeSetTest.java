@@ -83,4 +83,48 @@ class TreeSetTest extends SetTest {
 		collection.clear();
 		assertNull(treeSet.ceiling(1));
 	}
+	@Test
+	void headSetCopyTest() {		
+		
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12, 14 }, 			treeSet.headSetCopy(14, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12 },				treeSet.headSetCopy(14, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12 },    			treeSet.headSetCopy(13, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12 },     			treeSet.headSetCopy(13, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12, 14, 30, 100 }, treeSet.headSetCopy(100, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12, 14, 30 },      treeSet.headSetCopy(100, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12, 14, 30, 100 }, treeSet.headSetCopy(200, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12, 14, 30, 100 }, treeSet.headSetCopy(200, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20 }, 						treeSet.headSetCopy(-20, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[0] , 								treeSet.headSetCopy(-20, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[0] ,             (new TreeSet<Integer>()).headSetCopy(14, true).toArray(new Integer[0]));
+	}
+	
+	@Test
+	void tailSetCopyTest() {
+		
+		assertArrayEquals(new Integer[]	               {14, 30 , 100 }, treeSet.tailSetCopy(14, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[]	                   {30 , 100 }, treeSet.tailSetCopy(14, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[]                    {30 , 100 }, treeSet.tailSetCopy(20, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[]                    {30 , 100 }, treeSet.tailSetCopy(14, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12, 14, 30, 100 }, treeSet.tailSetCopy(-20, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[]      {8, 10, 12, 14, 30, 100 }, treeSet.tailSetCopy(-20, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12, 14, 30, 100 }, treeSet.tailSetCopy(-200, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12, 14, 30, 100 }, treeSet.tailSetCopy(-200, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[]                         {100 }, treeSet.tailSetCopy(100, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[0] , 								treeSet.tailSetCopy(100, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[0] ,             (new TreeSet<Integer>()).tailSetCopy(14, true).toArray(new Integer[0]));
+	}
+
+	@Test
+	void subSetCopyTest() {
+		
+		assertThrows(IllegalArgumentException.class, ()->treeSet.subSetCopy(101, true, 100, true));
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12, 14, 30, 100 }, treeSet.subSetCopy(-20, true, 100, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[]     { 8, 10, 12, 14, 30, 100 }, treeSet.subSetCopy(-20, false, 100, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20, 8, 10, 12, 14, 30 },      treeSet.subSetCopy(-20, true, 100, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[]     { 8, 10, 12, 14, 30 },      treeSet.subSetCopy(-20, false, 100, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[] {-20 },							treeSet.subSetCopy(-20, true, -20, true).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[0] , 								treeSet.subSetCopy(-20, true, -20, false).toArray(new Integer[0]));
+		assertArrayEquals(new Integer[0] , 								treeSet.subSetCopy(-20, false, -20, true).toArray(new Integer[0]));		
+	}
 }

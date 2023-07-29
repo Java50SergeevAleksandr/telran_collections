@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 @SuppressWarnings("unchecked")
-public class TreeSet<T> implements SortedSet<T> {
+public class TreeSet<T> implements SortedSet<T>, Cloneable {
 
 	Node<T> root;
 	int size;
@@ -126,6 +126,10 @@ public class TreeSet<T> implements SortedSet<T> {
 		return size;
 	}
 
+	private Node<T> getCurrent(Node<T> current) {
+		return current.right != null ? getLeastFrom(current.right) : getGreaterParent(current);
+	}
+
 	@Override
 	public Iterator<T> iterator() {
 		return new Iterator<T>() {
@@ -143,12 +147,8 @@ public class TreeSet<T> implements SortedSet<T> {
 					throw new NoSuchElementException();
 				}
 				prev = current;
-				getCurrent();
+				current = getCurrent(current);
 				return prev.obj;
-			}
-
-			private void getCurrent() {
-				current = current.right != null ? getLeastFrom(current.right) : getGreaterParent(current);
 			}
 
 			@Override
@@ -281,27 +281,82 @@ public class TreeSet<T> implements SortedSet<T> {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		return setEqualsTo(obj);
+	}
+
+	@Override
 	public Object clone() throws CloneNotSupportedException {
-		// TODO Fix this method to return Shallow Copy of this collection
-		return super.clone();
+		TreeSet<T> clone = new TreeSet<>(comp);
+		clone.addAll(this);
+		return clone;
 	}
 
 	public SortedSet<T> headSetCopy(T toElement, boolean inclusive) {
-		// TODO Returns a shallow copy of the portion of this set whose elements are
+		// Returns a shallow copy of the portion of this set whose elements are
 		// less than (or equal to, if inclusive is true) toElement.
-		return null;
+		Node<T> tail = root == null ? null : getLeastFrom(root);
+		Node<T> head = root == null ? null : getParentOrNode(toElement);
+		if (head != null) {
+			int compRes = comp.compare(head.obj, toElement);
+			if (compRes > 0 || compRes == 0 && !inclusive) {
+				head = head.left != null ? getGreatestFrom(head.left) : getLeastParent(head);
+			}
+		}
+
+		return createRange(tail, head);
 	}
 
 	public SortedSet<T> tailSetCopy(T fromElement, boolean inclusive) {
-		// TODO Returns a shallow copy of the portion of this set whose elements are
+		// Returns a shallow copy of the portion of this set whose elements are
 		// greater than (or equal to, if inclusive is true) fromElement.
-		return null;
+
+		Node<T> head = root == null ? null : getGreatestFrom(root);
+		Node<T> tail = root == null ? null : getParentOrNode(fromElement);
+		if (tail != null) {
+			int compRes = comp.compare(tail.obj, fromElement);
+			if (compRes < 0 || compRes == 0 && !inclusive) {
+				tail = tail.right != null ? getLeastFrom(tail.right) : getGreaterParent(tail);
+			}
+		}
+
+		return createRange(tail, head);
 	}
 
 	public SortedSet<T> subSetCopy(T fromElement, boolean fromInclusive, T toElement, boolean toInclusive) {
-		// TODO Returns a shallow copy of the portion of this set whose elements range
+		// Returns a shallow copy of the portion of this set whose elements range
 		// from fromElement to toElement.
-		return null;
+		if (comp.compare(fromElement, toElement) > 0) {
+			throw new IllegalArgumentException("fromElement > toElement");
+		}
+		Node<T> tail = root == null ? null : getParentOrNode(fromElement);
+		if (tail != null) {
+			int compRes = comp.compare(tail.obj, fromElement);
+			if (compRes < 0 || compRes == 0 && !fromInclusive) {
+				tail = tail.right != null ? getLeastFrom(tail.right) : getGreaterParent(tail);
+			}
+		}
+		Node<T> head = root == null ? null : getParentOrNode(toElement);
+		if (head != null) {
+			int compRes = comp.compare(head.obj, toElement);
+			if (compRes > 0 || compRes == 0 && !toInclusive) {
+				head = head.left != null ? getGreatestFrom(head.left) : getLeastParent(head);
+			}
+		}
+		return createRange(tail, head);
+	}
+
+	private TreeSet<T> createRange(Node<T> first, Node<T> last) {
+		TreeSet<T> res = new TreeSet<>(comp);
+		if (first != null && last != null && comp.compare(first.obj, last.obj) <= 0) {
+			Node<T> node = first;
+			while (node != last) {
+				res.add(node.obj);
+				node = getCurrent(node);
+			}
+			res.add(node.obj);
+		}
+		return res;
 	}
 
 }
