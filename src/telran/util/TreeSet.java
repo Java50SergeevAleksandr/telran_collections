@@ -375,30 +375,6 @@ public class TreeSet<T> implements SortedSet<T> {
 		return res;
 	}
 
-	public void inverse() {
-		reverse(root);
-		comp = comp.reversed();
-	}
-
-	private Node<T> reverse(Node<T> point) {
-		if (point != null) {
-			Node<T> tmp = reverse(point.left);
-			point.left = reverse(point.right);
-			point.right = tmp;
-		}
-		return point;
-
-// ======== first solution
-//		if (point != null) {
-//			Node<T> tmp;
-//			tmp = point.left;
-//			point.left = point.right;
-//			point.right = tmp;
-//			reverse(point.left);
-//			reverse(point.right);
-//		}
-	}
-
 	private Node<T> higherNode(T key, boolean strictly) {
 		// returns element if exists or nearest greater element
 		Node<T> node = null;
@@ -477,4 +453,27 @@ public class TreeSet<T> implements SortedSet<T> {
 		return res;
 	}
 
+	public void inverse() {
+		reverse(root);
+		comp = comp.reversed();
+	}
+
+	private Node<T> reverse(Node<T> point) {
+		if (point != null) {
+			Node<T> tmp = reverse(point.left);
+			point.left = reverse(point.right);
+			point.right = tmp;
+		}
+		return point;
+
+// ======== first solution
+//		if (point != null) {
+//			Node<T> tmp;
+//			tmp = point.left;
+//			point.left = point.right;
+//			point.right = tmp;
+//			reverse(point.left);
+//			reverse(point.right);
+//		}
+	}
 }
