@@ -145,8 +145,7 @@ abstract class CollectionTest {
 	}
 
 	@Test
-	void retainAllTest() {
-		// TODO check method retainAll
+	void retainAllTest() {		
 		Integer[] ar1 = { 10, -20, 8, 14, 30, 12 };
 		Integer[] ar2 = { 8, 14 };
 		Integer[] ar3 = { 8 };

@@ -1,5 +1,6 @@
 package telran.util;
 
+import java.util.Iterator;
 import java.util.function.Predicate;
 
 public interface List<T> extends Collection<T> {
@@ -48,9 +49,26 @@ public interface List<T> extends Collection<T> {
 	}
 
 	default boolean listEqualsTo(Object other) {
-		// TODO Checks other is List having the equal elements in the same order (using
+		// Checks other is List having the equal elements in the same order (using
 		// iteration)
-		return false;
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof List)) {
+			return false;
+		}
+		@SuppressWarnings("unchecked")
+		List<T> otherList = (List<T>) other;
+		if (size() != otherList.size()) {
+			return false;
+		}
+		Iterator<T> thisIter = iterator();
+		Iterator<T> otherIter = otherList.iterator();
+		while (thisIter.hasNext()) {
+			if (thisIter.next() != otherIter.next()) {
+				return false;
+			}
+		}
+		return true;
 	}
-
 }

@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
 public class LinkedList<T> implements List<T> {
-	private static class Node<T> {
+	static class Node<T> {
 		T obj;
 		Node<T> next;
 		Node<T> prev;
@@ -19,7 +19,7 @@ public class LinkedList<T> implements List<T> {
 	Node<T> tail;
 	int size;
 
-	private class LinkedListIterator implements Iterator<T> {
+	class LinkedListIterator implements Iterator<T> {
 		Node<T> current = head;
 		boolean isRemoveAvailable = false;
 
@@ -58,7 +58,7 @@ public class LinkedList<T> implements List<T> {
 		return true;
 	}
 
-	private void addNode(int index, Node<T> node) {
+	void addNode(int index, Node<T> node) {
 
 		if (index == size) {
 			addTail(node);
@@ -89,7 +89,7 @@ public class LinkedList<T> implements List<T> {
 
 	}
 
-	private void addTail(Node<T> node) {
+	void addTail(Node<T> node) {
 		if (tail == null) {
 			head = tail = node;
 		} else {
@@ -100,7 +100,7 @@ public class LinkedList<T> implements List<T> {
 
 	}
 
-	private void removeNode(Node<T> removedNode) {
+	void removeNode(Node<T> removedNode) {
 		if (removedNode == head) {
 			removeHead();
 		} else if (removedNode == tail) {
