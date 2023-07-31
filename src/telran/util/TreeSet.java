@@ -229,7 +229,7 @@ public class TreeSet<T> implements SortedSet<T> {
 		return res;
 	}
 
-	private Node<T> getLeastFrom(Node<T> node) {
+	Node<T> getLeastFrom(Node<T> node) {
 		while (node.left != null) {
 			node = node.left;
 		}

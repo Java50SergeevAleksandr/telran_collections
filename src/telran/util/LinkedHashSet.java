@@ -13,7 +13,7 @@ public class LinkedHashSet<T> implements Set<T> {
 		boolean res = false;
 		Node<T> node = new Node<>(obj);
 		if (map.put(obj, node) == null) {
-			list.addTail(node);
+			list.addNode(size(), node);
 			res = true;
 		}
 		return res;
@@ -37,7 +37,7 @@ public class LinkedHashSet<T> implements Set<T> {
 
 	@Override
 	public int size() {
-		return map.size();
+		return list.size();
 	}
 
 	@Override
@@ -47,7 +47,12 @@ public class LinkedHashSet<T> implements Set<T> {
 
 	@Override
 	public T get(Object pattern) {
-		return map.get(pattern).obj;
+		Node<T> node = map.get(pattern);
+		return node == null ? null : node.obj;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		return setEqualsTo(obj);
+	}
 }
