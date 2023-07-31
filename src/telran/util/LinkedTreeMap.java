@@ -62,21 +62,11 @@ public class LinkedTreeMap<T> implements SortedSet<T> {
 
 		public FilteredIterator(Iterator<Entry<T, LinkedList.Node<T>>> srcIterator) {
 			it = srcIterator;
-			findNext();
-		}
-
-		private void findNext() {
-			isFind = false;
-
-			while (!isFind && it.hasNext()) {
-				current = it.next();
-				isFind = true;
-			}
 		}
 
 		@Override
 		public boolean hasNext() {
-			return isFind;
+			return it.hasNext();
 		}
 
 		@Override
@@ -84,10 +74,9 @@ public class LinkedTreeMap<T> implements SortedSet<T> {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
-
+			current = it.next();
 			T res = current.getValue().obj;
 			isRemoveAvailable = true;
-			findNext();
 			return res;
 		}
 
