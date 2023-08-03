@@ -87,8 +87,13 @@ class TreeSetTest extends SetTest {
 
 	@Test
 	void displayRotatedTest() {
+		treeSet = new TreeSet<Integer>();
+		Integer[] intData = { 17, 20, 10, -4, 100, 12, 18, 15, 19, 48 }; // add to tree
+		for (Integer num : intData) {
+			treeSet.add(num);
+		}
 		treeSet.setSpacesPerLevel(4);
-		treeSet.displayRotated();
+		treeSet.printTree();
 	}
 
 	@Test

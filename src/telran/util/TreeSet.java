@@ -39,6 +39,72 @@ public class TreeSet<T> implements SortedSet<T> {
 		}
 	}
 
+	public void printTree() {
+		if (root != null) {
+			print(root, 0, 0, 0);
+		}
+	}
+
+	private void print(Node<T> node, int depth, int leftDepth, int rightDepth) {
+		if (node != null) {
+			print(node.right, depth + 1, leftDepth, rightDepth + 1);
+			displayNode(node, depth, leftDepth, rightDepth);
+			print(node.left, depth + 1, leftDepth + 1, rightDepth);
+
+		}
+	}
+
+	private void displayNode(Node<T> node, int depth, int leftDepth, int rightDepth) {
+
+		if (node == root || node == node.parent.right) {
+
+			if (leftDepth > 0) {
+				int ld = depth - leftDepth;
+				System.out.printf("%s", "   ".repeat(depth - 1 - Math.abs(ld)));
+				System.out.printf("%s", "   |");
+
+				if (node.parent == node.parent.parent.left && leftDepth == rightDepth - 1) {
+					System.out.printf("%s", "   |");
+					System.out.printf("%s", "   ".repeat(depth - rightDepth));
+				} else {
+					System.out.printf("%s", "   ".repeat(ld));
+				}
+
+			} else {
+				System.out.printf("%s", "   ".repeat(depth));
+			}
+
+			if (depth > 0) {
+				System.out.printf("%s", "+");
+			}
+			System.out.printf("%3d%n", node.obj);
+
+		} else {
+
+			if (rightDepth > 0) {
+				int rd = depth - rightDepth;
+				System.out.printf("%s", "   ".repeat(depth - 1 - Math.abs(rd)));
+				System.out.printf("%s", "   |");
+
+				if (node.parent == node.parent.parent.right && rightDepth == leftDepth - 1) {
+					System.out.printf("%s", "   |");
+					System.out.printf("%s", "   ".repeat(depth - leftDepth));
+				} else {
+					System.out.printf("%s", "   ".repeat(rd));
+				}
+
+			} else {
+				System.out.printf("%s", "   ".repeat(depth));
+			}
+
+			if (depth > 0) {
+				System.out.printf("%s", "+");
+			}
+			System.out.printf("%3d%n", node.obj);
+
+		}
+	}
+
 	private Node<T> getParentOrNode(T key) {
 		Node<T> current = root;
 		Node<T> parent = null;
@@ -87,31 +153,68 @@ public class TreeSet<T> implements SortedSet<T> {
 		return res;
 	}
 
-	@Override
+//	@Override
+//	public boolean add(T obj) {
+//		Node<T> node = new Node<T>(obj);
+//		boolean res = false;
+//		if (root == null) {
+//			res = true;
+//			root = node;
+//		} else {
+//			Node<T> parent = getParent(obj);
+//			if (parent != null) {
+//				res = true;
+//				node.parent = parent;
+//				int compRes = comp.compare(obj, parent.obj);
+//				if (compRes > 0) {
+//					parent.right = node;
+//				} else {
+//					parent.left = node;
+//				}
+//			}
+//		}
+//
+//		if (res) {
+//			size++;
+//		}
+//		return res;
+//	}
+
 	public boolean add(T obj) {
-		Node<T> node = new Node<T>(obj);
-		boolean res = false;
+		int oldSize = size();
 		if (root == null) {
-			res = true;
-			root = node;
+			root = new Node<>(obj);
+			size++;
 		} else {
-			Node<T> parent = getParent(obj);
-			if (parent != null) {
-				res = true;
-				node.parent = parent;
-				int compRes = comp.compare(obj, parent.obj);
-				if (compRes > 0) {
-					parent.right = node;
-				} else {
-					parent.left = node;
-				}
+			recurAdd(null, root, obj, 0);
+		}
+
+		return size() > oldSize;
+	}
+
+	private void recurAdd(Node<T> parent, Node<T> current, T obj, int res) {
+		if (current != null) {
+			int compRes = comp.compare(obj, current.obj);
+
+			if (compRes > 0) {
+				recurAdd(current, current.right, obj, compRes);
+			}
+
+			if (compRes < 0) {
+				recurAdd(current, current.left, obj, compRes);
+			}
+		} else {
+			size++;
+			Node<T> node = new Node<>(obj);
+			node.parent = parent;
+			if (res > 0) {
+				parent.right = node;
+			}
+			if (res < 0) {
+				parent.left = node;
 			}
 		}
 
-		if (res) {
-			size++;
-		}
-		return res;
 	}
 
 	@Override
@@ -128,6 +231,11 @@ public class TreeSet<T> implements SortedSet<T> {
 	@Override
 	public boolean contains(Object pattern) {
 		return getNode((T) pattern) != null;
+	}
+
+	public boolean recurContains(Object pattern) {
+
+		return true;
 	}
 
 	@Override
