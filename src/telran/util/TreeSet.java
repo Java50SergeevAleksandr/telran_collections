@@ -228,14 +228,38 @@ public class TreeSet<T> implements SortedSet<T> {
 		return false;
 	}
 
+//	@Override
+//	public boolean contains(Object pattern) {
+//		return getNode((T) pattern) != null;
+//	}
 	@Override
 	public boolean contains(Object pattern) {
-		return getNode((T) pattern) != null;
+	//	return recCon(root, (T) pattern);
+	 return recContains(root, pattern) != null;
 	}
 
-	public boolean recurContains(Object pattern) {
+//	private boolean recCon(Node<T> root, T pattern) {
+//		if (root == null) {
+//			return false;
+//		}
+//		boolean res = comp.compare(root.obj, pattern) == 0;
+//		return res || recCon(root.left, pattern) || recCon(root.right, pattern);
+//	}
 
-		return true;
+	private Node<T> recContains(Node<T> cur, Object pattern) {
+		Node<T> res = null;
+		if (cur != null) {
+			res = cur;
+			int compRes = comp.compare((T) pattern, cur.obj);
+			if (compRes > 0) {
+				res = recContains(cur.right, pattern);
+			}
+			if (compRes < 0) {
+				res = recContains(cur.left, pattern);
+			}
+		}
+		return res;
+
 	}
 
 	@Override
