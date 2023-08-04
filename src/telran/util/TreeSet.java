@@ -2,6 +2,7 @@ package telran.util;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 @SuppressWarnings("unchecked")
@@ -41,68 +42,47 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	public void printTree() {
 		if (root != null) {
-			print(root, 0, 0, 0);
+			LinkedList<Integer> list = new LinkedList<Integer>();
+			print(root, 0, list);
 		}
 	}
 
-	private void print(Node<T> node, int depth, int leftDepth, int rightDepth) {
+	private void print(Node<T> node, int depth, LinkedList<Integer> list) {
 		if (node != null) {
-			print(node.right, depth + 1, leftDepth, rightDepth + 1);
-			displayNode(node, depth, leftDepth, rightDepth);
-			print(node.left, depth + 1, leftDepth + 1, rightDepth);
+			LinkedList<Integer> listR = (LinkedList<Integer>) list.clone();
+			LinkedList<Integer> listL = (LinkedList<Integer>) list.clone();
 
+			if (node != root && node.parent.right == node) {
+				listL.add(depth);
+			}
+			if (node != root && node.parent.left == node) {
+				listR.add(depth);
+			}
+			print(node.right, depth + 1, listR);
+			displayNode(node, depth, list);
+			print(node.left, depth + 1, listL);
 		}
+
 	}
 
-	private void displayNode(Node<T> node, int depth, int leftDepth, int rightDepth) {
-
-		if (node == root || node == node.parent.right) {
-
-			if (leftDepth > 0) {
-				int ld = depth - leftDepth;
-				System.out.printf("%s", "   ".repeat(depth - 1 - Math.abs(ld)));
-				System.out.printf("%s", "   |");
-
-				if (node.parent == node.parent.parent.left && leftDepth == rightDepth - 1) {
-					System.out.printf("%s", "   |");
-					System.out.printf("%s", "   ".repeat(depth - rightDepth));
-				} else {
-					System.out.printf("%s", "   ".repeat(ld));
-				}
-
-			} else {
-				System.out.printf("%s", "   ".repeat(depth));
-			}
-
-			if (depth > 0) {
-				System.out.printf("%s", "+");
-			}
-			System.out.printf("%3d%n", node.obj);
-
-		} else {
-
-			if (rightDepth > 0) {
-				int rd = depth - rightDepth;
-				System.out.printf("%s", "   ".repeat(depth - 1 - Math.abs(rd)));
-				System.out.printf("%s", "   |");
-
-				if (node.parent == node.parent.parent.right && rightDepth == leftDepth - 1) {
-					System.out.printf("%s", "   |");
-					System.out.printf("%s", "   ".repeat(depth - leftDepth));
-				} else {
-					System.out.printf("%s", "   ".repeat(rd));
-				}
-
-			} else {
-				System.out.printf("%s", "   ".repeat(depth));
-			}
-
-			if (depth > 0) {
-				System.out.printf("%s", "+");
-			}
-			System.out.printf("%3d%n", node.obj);
-
+	private void displayNode(Node<T> node, int depth, LinkedList<Integer> list) {
+		int[] ar = new int[depth];
+		for (Integer num : list) {
+			ar[num - 1] = 1;
 		}
+		for (int i = 0; i < ar.length - 1; i++) {
+			if (ar[i] == 0) {
+				System.out.printf("%s", "    ");
+			} else {
+				System.out.printf("%s", "   |");
+			}
+		}
+
+		if (depth > 0) {
+			System.out.printf("%s", "   +");
+		}
+		System.out.printf("%3d%n", node.obj);
+
 	}
 
 	private Node<T> getParentOrNode(T key) {
@@ -116,18 +96,18 @@ public class TreeSet<T> implements SortedSet<T> {
 		return current == null ? parent : current;
 	}
 
-	private Node<T> getParent(T key) {
-		// returns null in the case the object matching key exists
-		Node<T> node = getParentOrNode(key);
-		Node<T> parent = null;
-//		if (comp.compare(key, node.obj) != 0) {
+//	private Node<T> getParent(T key) {
+//		// returns null in the case the object matching key exists
+//		Node<T> node = getParentOrNode(key);
+//		Node<T> parent = null;
+////		if (comp.compare(key, node.obj) != 0) {
+////			parent = node;
+////		}
+//		if (!node.obj.equals(key)) {
 //			parent = node;
 //		}
-		if (!node.obj.equals(key)) {
-			parent = node;
-		}
-		return parent;
-	}
+//		return parent;
+//	}
 
 	private Node<T> getNode(T key) {
 		// returns null in the case the object matching key doesn't exist
@@ -234,8 +214,8 @@ public class TreeSet<T> implements SortedSet<T> {
 //	}
 	@Override
 	public boolean contains(Object pattern) {
-	//	return recCon(root, (T) pattern);
-	 return recContains(root, pattern) != null;
+		// return recCon(root, (T) pattern);
+		return recContains(root, pattern) != null;
 	}
 
 //	private boolean recCon(Node<T> root, T pattern) {

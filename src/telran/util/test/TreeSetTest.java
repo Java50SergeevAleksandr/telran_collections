@@ -94,6 +94,15 @@ class TreeSetTest extends SetTest {
 		}
 		treeSet.setSpacesPerLevel(4);
 		treeSet.printTree();
+
+		System.out.printf("%n ========= new tree ========= %n%n");
+		treeSet.clear();
+		Integer[] intData2 = { 80, 28, 84, 2, 89, 42, 6, 84, 3, 75, 51, 16, 81, 43, 39, 97, 25, 55, 31, 8, 82, 58, 80,
+				91, 28, 44, 8, 99, 55, 97 };
+		for (Integer num : intData2) {
+			treeSet.add(num);
+		}
+		treeSet.printTree();
 	}
 
 	@Test
