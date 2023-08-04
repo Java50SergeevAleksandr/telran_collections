@@ -1,31 +1,27 @@
 package telran.util.test;
 
-import java.util.Arrays;
-
 import org.junit.jupiter.api.BeforeEach;
 
-import telran.util.Collection;
-import telran.util.HashMap;
 import telran.util.Map.Entry;
-import telran.util.Set;
+import telran.util.TreeMap;
 
-public class HashMapTest extends MapTest {
+public class TreeMapTest extends MapTest {
 	@BeforeEach
 	@Override
 	void setUp() {
-		map = new HashMap<>();
+		map = new TreeMap<>();
 		super.setUp();
 	}
 
 	@Override
 	protected String[] getKeysActual(String[] keys) {
-		Arrays.sort(keys);
+
 		return keys;
 	}
 
 	@Override
 	protected Entry<String, Integer>[] getEntriesActual(Entry<String, Integer>[] entries) {
-		Arrays.sort(entries);
+
 		return entries;
 	}
 }

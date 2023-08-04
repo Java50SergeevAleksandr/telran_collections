@@ -82,6 +82,7 @@ abstract class CollectionTest {
 		Integer[] expected = { 10, -20, 8, 14, 12 };
 		assertTrue(collection.removeIf(num -> num >= 30));
 		runArrayTest(expected, collection.toArray(new Integer[0]));
+		assertFalse(collection.contains(30));
 	}
 
 	@Test
@@ -145,7 +146,7 @@ abstract class CollectionTest {
 	}
 
 	@Test
-	void retainAllTest() {		
+	void retainAllTest() {
 		Integer[] ar1 = { 10, -20, 8, 14, 30, 12 };
 		Integer[] ar2 = { 8, 14 };
 		Integer[] ar3 = { 8 };

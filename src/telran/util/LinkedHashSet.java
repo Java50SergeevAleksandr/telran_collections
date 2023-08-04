@@ -2,6 +2,7 @@ package telran.util;
 
 import java.util.Iterator;
 
+import telran.util.LinkedList.LinkedListIterator;
 import telran.util.LinkedList.Node;
 
 public class LinkedHashSet<T> implements Set<T> {
@@ -42,7 +43,36 @@ public class LinkedHashSet<T> implements Set<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		return list.iterator();
+		return new LinkedHashSetIterator();
+	}
+
+	@SuppressWarnings("unchecked")
+	private class LinkedHashSetIterator implements Iterator<T> {
+
+		@SuppressWarnings("rawtypes")
+		LinkedListIterator it = (LinkedListIterator) list.iterator();
+
+		@Override
+		public boolean hasNext() {
+
+			return it.hasNext();
+		}
+
+		@Override
+		public T next() {
+
+			return (T) it.next();
+		}
+
+		@Override
+		public void remove() {
+
+			Node<T> removedNode = it.current != null ? it.current.prev : list.tail;
+			map.remove(removedNode.obj);
+			it.remove();
+
+		}
+
 	}
 
 	@Override
