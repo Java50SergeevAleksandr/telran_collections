@@ -21,7 +21,7 @@ public abstract class PerformanceTest {
 		long stopTime = System.currentTimeMillis();
 		System.out.println("Test name: " + testName);
 		System.out.printf("Value of runs: %d%n", nRuns);
-		System.out.printf("Running time: %d%n", startTime - stopTime);
+		System.out.printf("Running time: %d%n",  stopTime - startTime);
 		System.out.printf("=============%n%n");
 	}
 }
