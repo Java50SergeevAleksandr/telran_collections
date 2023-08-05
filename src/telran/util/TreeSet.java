@@ -55,9 +55,11 @@ public class TreeSet<T> implements SortedSet<T> {
 			if (node != root && node.parent.right == node) {
 				listL.add(depth);
 			}
+
 			if (node != root && node.parent.left == node) {
 				listR.add(depth);
 			}
+
 			print(node.right, depth + 1, listR);
 			displayNode(node, depth, list);
 			print(node.left, depth + 1, listL);
@@ -67,9 +69,11 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	private void displayNode(Node<T> node, int depth, LinkedList<Integer> list) {
 		int[] ar = new int[depth];
+
 		for (Integer num : list) {
 			ar[num - 1] = 1;
 		}
+
 		for (int i = 0; i < ar.length - 1; i++) {
 			if (ar[i] == 0) {
 				System.out.printf("%s", "    ");
@@ -81,6 +85,7 @@ public class TreeSet<T> implements SortedSet<T> {
 		if (depth > 0) {
 			System.out.printf("%s", "   +");
 		}
+
 		System.out.printf("%3d%n", node.obj);
 
 	}
