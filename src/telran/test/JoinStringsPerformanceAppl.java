@@ -17,11 +17,11 @@ public class JoinStringsPerformanceAppl {
 	}
 
 	public static void main(String[] args) {
-
 		JoinStringsOnBuilder joinBuilder = new JoinStringsOnBuilder();
 		JoinStringsOnString joinString = new JoinStringsOnString();
 		JoinStringsOnStandard joinStandartString = new JoinStringsOnStandard();
 
+		
 		JoinStringPerformanceTest BuilderTest = new JoinStringPerformanceTest("JoinBuilderTest", 10000, bigArray,
 				joinBuilder);
 		JoinStringPerformanceTest StringTest = new JoinStringPerformanceTest("JoinStringTest", 1000, bigArray,
@@ -29,6 +29,7 @@ public class JoinStringsPerformanceAppl {
 		JoinStringPerformanceTest StandartStringTest = new JoinStringPerformanceTest("JoinStandartStringTest", 10000,
 				bigArray, joinStandartString);
 
+		
 		BuilderTest.run();
 		StringTest.run();
 		StandartStringTest.run();
