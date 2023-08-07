@@ -48,8 +48,9 @@ public class QuickDictionary {
 				targetKeys.retainAll(lenghtTable[i][key.charAt(i) - 'A'].keySet());
 			}
 
-			var targetArr = targetKeys.toArray();
-			res = targetArr.length == 0 ? null : lenghtTable[0][key.charAt(0) - 'A'].get(targetArr[0]);
+			for (String s : targetKeys) {
+				res = lenghtTable[0][key.charAt(0) - 'A'].get(s);
+			}
 		}
 
 		return res;
