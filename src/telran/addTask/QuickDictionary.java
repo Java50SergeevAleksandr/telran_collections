@@ -19,7 +19,10 @@ public class QuickDictionary {
 		key = key.toUpperCase();
 		String res = null;
 		for (int i = 0; i < key.length(); i++) {
-			res = lenghtTable[i][key.charAt(i) - 'A'].put(key, value);
+			if (lenghtTable[i][key.charAt(i) - 'A'] != null) {
+				res = lenghtTable[i][key.charAt(i) - 'A'].put(key, value);
+			}
+
 		}
 		return res;
 	}
