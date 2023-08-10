@@ -79,6 +79,7 @@ class ColoredBTreeTest {
 		String result = chainToString(tree.maxChain());
 		System.out.println("-".repeat(30));
 		System.out.println("Expected: " + expectedResult);
+		System.out.println("MyResult: " + result);
 		assertEquals(expectedResult, result);
 	}
 }
