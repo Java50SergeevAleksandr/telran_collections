@@ -103,21 +103,28 @@ public class Strings {
 
 	private static double getValue(String operand, Map<String, Double> variableValues) {
 
-		double res = 0; // if operand is number then res will be Double.parseDouble(operand) otherwise
+		// if operand is number then res will be Double.parseDouble(operand) otherwise
 		// the value should be got from the map
 		// if the operand is a variable and a value doesn't exist in the map the
 		// IllegalArgumentException should be thrown
-
-		if (operand.matches(numberExp())) {
-			res = Double.parseDouble(operand);
-		} else {
-			ToDoubleFunction<String> fo = s -> {
-				throw new IllegalArgumentException(s);
-			};
-			res = variableValues.get(operand) == null ? 
-					fo.applyAsDouble(VARIABLE_NOT_DEFINED)
-					: variableValues.get(operand);
+		double res = operand.matches(numberExp()) ? Double.parseDouble(operand) : variableValues.getOrDefault(operand, Double.NaN);
+		if (Double.isNaN(res)) {
+			throw new IllegalArgumentException(VARIABLE_NOT_DEFINED);
 		}
 		return res;
+
+//		double res = 0;
+//		if (operand.matches(numberExp())) {
+//			res = Double.parseDouble(operand);
+//		} else {
+//			ToDoubleFunction<String> fo = s -> {
+//				throw new IllegalArgumentException(s);
+//			};
+//			res = variableValues.get(operand) == null ? 
+//					fo.applyAsDouble(VARIABLE_NOT_DEFINED)
+//					: variableValues.get(operand);
+//		}
+//		return res;
+
 	}
 }
