@@ -145,5 +145,7 @@ class StringsTest {
 		assertEquals(12, calculation("12", variableValues));
 		assertEquals(2, calculation("1 + b", variableValues));
 		assertEquals(-11, calculation("1.5 + c/3.5*10 - 21", variableValues));
+		assertEquals(Double.POSITIVE_INFINITY, calculation("20 / 0 + a", variableValues));
+		assertEquals(Double.NEGATIVE_INFINITY, calculation("b - a / 0 + 7", variableValues));
 	}
 }
