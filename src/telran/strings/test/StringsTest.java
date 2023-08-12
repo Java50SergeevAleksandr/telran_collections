@@ -3,6 +3,9 @@ package telran.strings.test;
 import static org.junit.jupiter.api.Assertions.*;
 import static telran.strings.Strings.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 
 class StringsTest {
@@ -114,7 +117,7 @@ class StringsTest {
 		assertTrue("1 + a".matches(regex));
 		assertTrue("1.5 + a/2*10 - 21".matches(regex));
 		assertTrue(" .5 + $/2* 10.0 /21.1234".matches(regex));
-		assertTrue("5. + __/2* 0.0 /0 ".matches(regex));		
+		assertTrue("5. + __/2* 0.0 /0 ".matches(regex));
 		assertTrue(" aA123 ".matches(regex));
 		assertTrue("25.".matches(regex));
 	}
@@ -128,5 +131,19 @@ class StringsTest {
 		assertFalse("25 .".matches(regex));
 		assertFalse("aA123*".matches(regex));
 		assertFalse(" + a * b".matches(regex));
+	}
+
+	@Test
+	void calcultaionTest() {
+		Map<String, Double> variableValues = new HashMap<>();
+		variableValues.put("a", 10.);
+		variableValues.put("b", 1.);
+		variableValues.put("c", 2.);
+		assertEquals(10, calculation("a", variableValues));
+		assertThrowsExactly(IllegalArgumentException.class, () -> calculation(" + a * b", variableValues));
+		assertThrowsExactly(IllegalArgumentException.class, () -> calculation("var", variableValues));
+		assertEquals(12, calculation("12", variableValues));
+		assertEquals(2, calculation("1 + b", variableValues));
+		assertEquals(-11, calculation("1.5 + c/3.5*10 - 21", variableValues));
 	}
 }
