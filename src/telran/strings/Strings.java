@@ -112,19 +112,20 @@ public class Strings {
 			throw new IllegalArgumentException(VARIABLE_NOT_DEFINED);
 		}
 		return res;
+	}
 
-//		double res = 0;
-//		if (operand.matches(numberExp())) {
-//			res = Double.parseDouble(operand);
-//		} else {
-//			ToDoubleFunction<String> fo = s -> {
-//				throw new IllegalArgumentException(s);
-//			};
-//			res = variableValues.get(operand) == null ? 
-//					fo.applyAsDouble(VARIABLE_NOT_DEFINED)
-//					: variableValues.get(operand);
-//		}
-//		return res;
-
+	private static double getValue2(String operand, Map<String, Double> variableValues) {		
+		double res = 0;
+		if (operand.matches(numberExp())) {
+			res = Double.parseDouble(operand);
+		} else {
+			ToDoubleFunction<String> fo = s -> {
+				throw new IllegalArgumentException(s);
+			};
+			res = variableValues.get(operand) == null ? 
+					fo.applyAsDouble(VARIABLE_NOT_DEFINED)
+					: variableValues.get(operand);
+		}
+		return res;
 	}
 }
