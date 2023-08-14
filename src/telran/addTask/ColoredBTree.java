@@ -14,8 +14,7 @@ import java.util.TreeSet;
 public class ColoredBTree {
 	Node root = null;
 	int size = 0;
-	LinkedList<Node>[] lists;
-	int count = 0;
+	ArrayList<LinkedList<Node>> lists = new ArrayList<>(1);
 
 	public static class Node implements Comparable<Node> {
 		public int value;
@@ -90,24 +89,25 @@ public class ColoredBTree {
 	/**
 	 * Calculates the longest chain of Node-s having the same color
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Node> maxChain() {
 		ArrayList<Node> res = null;
 
 		if (root != null) {
-			lists = (LinkedList<Node>[]) new LinkedList[size * 3];
-			for (int i = 0; i < lists.length; i++) {
-				lists[i] = new LinkedList<Node>();
-			}
-			treeScan(root, lists[0], root.color);
+			addEmptyList();
+			treeScan(root, lists.get(0), root.color);
 			res = findMaxChain(lists);
 		}
 
 		return res;
 	}
 
-	private ArrayList<Node> findMaxChain(LinkedList<Node>[] lists) {
-		LinkedList<Node> res = lists[0];
+	private void addEmptyList() {
+		LinkedList<Node> list = new LinkedList<Node>();
+		lists.add(list);
+	}
+
+	private ArrayList<Node> findMaxChain(ArrayList<LinkedList<Node>> lists) {
+		LinkedList<Node> res = lists.get(0);
 		for (LinkedList<Node> list : lists) {
 			if (list.size() > res.size()) {
 				res = list;
@@ -122,42 +122,58 @@ public class ColoredBTree {
 		return res;
 	}
 
-	@SuppressWarnings("unchecked")
 	private void treeScan(Node n, LinkedList<Node> curList, char prevColor) {
 		if (n != null) {
-			count++;
-			LinkedList<Node> rightList = curList;
-			LinkedList<Node> leftList = curList;
+			LinkedList<Node> rightList, leftList;
+			rightList = leftList = curList;
 
-			if (n.parent == null) {
-				curList.add(n);
+			if (n.color == prevColor) {
+				addToCurrentListInRightOrder(n, curList);
 			} else {
-
-				if (n.color == prevColor) {
-
-					if (/*n.parent.right == n &&*/ n.value > curList.getLast().value) {
-						curList.add(n);
-					} else {
-						curList.add(0, n);
-					}
-
-				} else {
-					lists[count].add(n);
-					rightList = leftList = lists[count];
-				}
-
-				if (n.left != null && n.right != null && n.right.color == n.color && n.left.color == n.color) {
-					lists[lists.length / 2 + count].add(n);
-					rightList = lists[lists.length / 2 + count];
-					treeScan(n.right, rightList, n.color);
-					treeScan(n.left, rightList, n.color);
-
-					lists[count] = (LinkedList<Node>) curList.clone();
-					rightList = lists[count];
-				}
+				addNodeToEmptyList(n);
+				rightList = leftList = getLastList();
 			}
+
+			if (isFullJunction(n)) {
+				addNodeToEmptyList(n);
+				rightList = getLastList();
+				treeScan(n.right, rightList, n.color);
+				treeScan(n.left, rightList, n.color);
+
+				addCloneList(curList);
+				rightList = getLastList();
+			}
+
 			treeScan(n.right, rightList, n.color);
 			treeScan(n.left, leftList, n.color);
 		}
+	}
+
+	private void addCloneList(LinkedList<Node> curList) {
+		addEmptyList();
+		@SuppressWarnings("unchecked")
+		LinkedList<Node> clone = (LinkedList<Node>) curList.clone();
+		lists.add(clone);
+	}
+
+	private void addNodeToEmptyList(Node n) {
+		addEmptyList();
+		getLastList().add(n);
+	}
+
+	private LinkedList<Node> getLastList() {
+		return lists.get(lists.size() - 1);
+	}
+
+	private void addToCurrentListInRightOrder(Node n, LinkedList<Node> curList) {
+		if (n.parent == null || n.value > curList.getLast().value) {
+			curList.add(n);
+		} else {
+			curList.add(0, n);
+		}
+	}
+
+	private boolean isFullJunction(Node n) {
+		return n != root && n.left != null && n.right != null && n.right.color == n.color && n.left.color == n.color;
 	}
 }
